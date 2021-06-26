@@ -1,7 +1,7 @@
 # GETreqt: Multithreaded Slow DoS Attack
 
 ## Description
-This is a Low & Slow Denial-of-Service attack based on incomplete and unterminated GET requests. [[Documentation in progress]]
+A unique, multithreaded Low & Slow denial-of-service attack against vulnerable versions of Apache-based web servers, that exhausts server resources at the cost of minimal bandwidth at the attacker’s end while denying typical service to the web server’s legitimate clients. This unique approach uses staggering amounts of concurrently generated non-terminated HTTP GET requests, and works against even poorly implemented load balancing proxy servers as well! [[Documentation in progress]]
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Example%20Execution.png" >
