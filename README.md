@@ -1,7 +1,7 @@
 # GETreqt: Multithreaded Slow DoS Attack
 
 ## Description
-This is a Low & Slow Denial-of-Service attack based on incomplete and unterminated GET requests. <Documentation in progress>
+This is a Low & Slow Denial-of-Service attack based on incomplete and unterminated GET requests. [[Documentation in progress]]
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Example%20Execution.png" >
