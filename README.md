@@ -14,10 +14,23 @@ This project was created in Python, for research purposes.
 
 
 ## Usage
+<div align="center">
+
 `GETreqt.py --target example.com --port 80 --length 1024 --threads 6000 --wait`
 
 `GETreqt.py -x example.com -p 80 -l 1024 -t 6000 -w`
 
+
+|Option | What It Means|
+|---|---|
+|target | Target web server address (IP or URL)|
+|port | Target web server port (eg: 80)|
+length | Total packet length (eg: 1000)|
+threads | Threads (sockets) to attack through (eg: 6000)|
+end | Terminate all requests correctly (blatant GET spam)|
+wait | Unterminated requests (elegant slow DoS)|
+
+</div>
 
 ### What GETreqt Does
 1. Creates the specified number of software threads simultaneously — these will be the sockets
