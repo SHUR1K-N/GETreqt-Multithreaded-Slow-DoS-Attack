@@ -1,0 +1,2 @@
+colorama 	# for colors
+termcolor 	# for colors
