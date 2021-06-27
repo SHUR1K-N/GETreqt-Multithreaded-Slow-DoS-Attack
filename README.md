@@ -1,14 +1,17 @@
 # GETreqt: Multithreaded Slow DoS Attack
 
 ## Description
-A unique, multithreaded Low & Slow denial-of-service attack against vulnerable versions of Apache-based web servers, that exhausts server resources at the cost of minimal bandwidth at the attacker’s end while denying typical service to the web server’s legitimate clients. This unique approach uses staggering amounts of concurrently generated non-terminated HTTP GET requests, and works against even poorly implemented load balancing proxy servers as well! [[Documentation in progress]]
+A unique, multithreaded Low & Slow denial-of-service (Slow DoS) attack against web servers using vulnerable versions of Apache, that exhausts server resources at the cost of minimal bandwidth at the attacker's end while denying typical service to the web server’s legitimate clients. This unique approach uses staggering amounts of concurrently generated unterminated HTTP GET requests as the sockets are being created and established on-the-go; and works against even poorly implemented load balancing proxy servers as well!
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Example%20Execution.png" >
 <p>Example Execution</p>
 </div>
 
-This project was created in Python, for research purposes.
+This project was created in Python, to supplement my Computer Science engineering degree's final-year research project titled "Low & Slow: The Evil Twin of DDoS Attacks", which was an awareness-based project. This project received the title of "The Best Project of Its Year" by the university.
+
+## Disclaimer
+GETreqt was created for the purposes of awareness, education, and research. I neither endorse nor shall be held responsible for any potential unethical or malicious activity that is a result of *your* usage of this tool.
 
 ## Usage
 <div align="center">
@@ -35,30 +38,53 @@ OR
 
 </div>
 
-### What GETreqt Does
+## What GETreqt Does
+### Using the `--wait` option
+1. The specified number of client-side software threads (--threads) are created — these would serve as the individual sockets established between the client and server
 
-#### Using the `--wait` option
-1. Creates the specified number of client-side software threads — these will be the sockets (--threads)
+2. *Unterminated* GET request headers are created to be sent via all these created sockets
 
-2. Creates *unterminated* GET request headers to be sent via all these created sockets
+3. As this large number of sockets are being created and established, the *unterminated* GET requests are concurrently sent to the target web server using whatever sockets are already established presently
 
-3. Sends the *unterminated* GET requests to the target web server using all created sockets concurrently, even while the other sockets are being created
+4. When a socket dies or a server-side thread is freed up (unoccupied), additional sockets are concurrently created and established to maximize the number of occupied server-side threads
 
-4. When a socket dies or a server-side thread is freed up, more sockets are created and established to occupy the server-side thread(s)
+5. Steps #3 and #4 remain active until either the script is killed, or the specified length of the entire request (--length) reaches its end, or the server crashes
 
-5. Steps #3 and #4 are kept active until the script is killed or the specified length of the entire request (--length) reaches its end
+<div align="center">
+<img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Unterminated.png" >
+<p>Sending Unterminated Requests</p>
+</div>
 
-#### Using the `--end` option
-1. Creates the specified number of client-side software threads — these will be the sockets (--threads)
+### Using the `--end` option
+1. The specified number of client-side software threads (--threads) are created — these would serve as the individual sockets established between the client and server
 
-2. Creates *terminated* GET request headers to be sent via all these created sockets
+2. *Terminated* GET request headers are created to be sent via all these created sockets
 
-3. Sends the *terminated* GET requests to the target web server using all created sockets concurrently, even while the other sockets are being created
+3. As this large number of sockets are being created and established, the *terminated* GET requests are concurrently sent to the target web server using whatever sockets are already established presently
 
-4. When a socket dies or a server-side thread is freed up, more sockets are created and established to occupy the server-side thread(s)
+4. When a socket dies or a server-side thread is freed up (unoccupied), additional sockets are concurrently created and established to maximize the number of occupied server-side threads
 
-5. Steps #3 and #4 are kept active until the script is killed or the specified length of the entire request (--length) reaches its end
+5. Steps #3 and #4 remain active until either the script is killed, or the specified length of the entire request (--length) reaches its end, or the server crashes
 
+<div align="center">
+<img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Terminated.png" >
+<p>Sending Terminated Requests</p>
+</div>
+
+### Results
+When the server-side threads that are explicitly assigned to be serving clients are completely occupied by GETreqt's flood of terminated or unterminated GET requests, a legitimate client would fail to connect with the web server due to an insufficient amount of available threads on the server-side to be serving this client. This will result in the "Waiting for \<target host\>" message as the web browser anticipates a connection but never establishes one:
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Waiting.png" >
+<p>Waiting...</p>
+</div>
+
+Further, upon waiting for a long enough amount of time, the web browser gives up as the server-side threads are completely occupied serving the attacker's requests. This is when the "ERR_CONNECTION_TIMED_OUT" error message is displayed:
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/ERR_CONNECTION_TIMED_OUT.png" >
+<p>ERR_CONNECTION_TIMED_OUT</p>
+</div>
 
 ## Dependencies to PIP-Install
 - **colorama** (for colors)
