@@ -10,9 +10,6 @@ A unique, multithreaded Low & Slow denial-of-service attack against vulnerable v
 
 This project was created in Python, for research purposes.
 
-## Features
-
-
 ## Usage
 <div align="center">
 
@@ -27,14 +24,14 @@ OR
 `GETreqt.py -x example.com -p 80 -l 1024 -t 10000 -e`
 
 
-|Option |Description                                          |
-|-------|-----------------------------------------------------|
-|target | Target web server address (IP address or URL)       |
-|port   | Target web server port (eg: 80)                     |
-|length | Total packet length (eg: 1000)                      |
-|threads| Threads (sockets) to attack with (eg: 6000)      |
-|wait   | Do not terminate requests (elegant slow DoS)        |
-|end    | Terminate all requests correctly (blatant GET spam) |
+|Option       |Description                                          |
+|-------------|-----------------------------------------------------|
+|target (-x)  | Target web server address (IP address or URL)       |
+|port (-p)    | Target web server port (eg: 80)                     |
+|length (-l)  | Total packet length (eg: 1000)                      |
+|threads (-t) | Threads (sockets) to attack with (eg: 6000)         |
+|wait (-w)    | Do not terminate requests (elegant slow DoS)        |
+|end (-e)     | Terminate all requests correctly (blatant GET spam) |
 
 </div>
 
