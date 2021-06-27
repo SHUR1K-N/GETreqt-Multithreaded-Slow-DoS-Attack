@@ -11,7 +11,6 @@ A unique, multithreaded Low & Slow denial-of-service attack against vulnerable v
 This project was created in Python, for research purposes.
 
 ## Usage
-
 <div align="center">
 
 `GETreqt.py --target example.com --port 80 --length 1024 --threads 6000 --wait`
@@ -37,6 +36,7 @@ OR
 </div>
 
 ### What GETreqt Does
+
 #### Using the `--wait` option
 1. Creates the specified number of client-side software threads — these will be the sockets (--threads)
 
