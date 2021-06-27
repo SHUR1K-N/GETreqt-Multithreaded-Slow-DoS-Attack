@@ -21,23 +21,23 @@ This project was created in Python, for research purposes.
 `GETreqt.py -x example.com -p 80 -l 1024 -t 6000 -w`
 
 
-|Option | What It Means|
-|---|---|
-|target | Target web server address (IP or URL)|
-|port | Target web server port (eg: 80)|
-length | Total packet length (eg: 1000)|
-threads | Threads (sockets) to attack through (eg: 6000)|
-end | Terminate all requests correctly (blatant GET spam)|
-wait | Unterminated requests (elegant slow DoS)|
+|Option |Description                                          |
+|-------|-----------------------------------------------------|
+|target | Target web server address (IP or URL)               |
+|port   | Target web server port (eg: 80)                     |
+|length | Total packet length (eg: 1000)                      |
+|threads| Threads (sockets) to attack through (eg: 6000)      |
+|end    | Terminate all requests correctly (blatant GET spam) |
+|wait   | Unterminated requests (elegant slow DoS)            |
 
 </div>
 
 ### What GETreqt Does
-1. Creates the specified number of software threads simultaneously — these will be the sockets
+1. Creates the specified number of client-side software threads — these will be the sockets (--threads)
 2. Creates unterminated GET request headers to be sent via all these created sockets
-3. Sends the unterminated GET requests to the target web server using all these created sockets simultaneously
-4. When a socket dies or a thread is freed up on the server's side, more sockets are created and more GET requests are sent via them
-5. This goes on until the script is killed or the specified length of the entire request reaches its end
+3. Sends the unterminated GET requests to the target web server using all created sockets concurrently, even while the other sockets are being created
+4. When a socket dies or a server-side thread is freed up, more sockets are created and established to occupy the server-side thread(s)
+5. Steps #3 and #4 are kept active until the script is killed or the specified length of the entire request (--length) reaches its end
 
 
 ## Dependencies to PIP-Install
