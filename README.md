@@ -69,11 +69,13 @@ OR
 
 2. *Unterminated* GET request headers are created to be sent via all these created sockets
 
-3. As this large number of sockets are being created and established, the *unterminated* GET requests are concurrently sent to the target web server using whatever sockets are already established presently
+3. As this large number of sockets is being created and established, the *unterminated* GET requests are concurrently sent to the target web server using whatever sockets are already established presently
 
-4. When a socket dies or a server-side thread is freed up (unoccupied), additional sockets are concurrently created and established to maximize the number of occupied server-side threads
+4. At randomized time intervals, a single byte is added to this ongoing, unterminated GET request to keep the communication with the server alive and the GET request further ongoing. This time interval is a float within the 0–5 range, and is randomized for each individual socket, for each individual iteration. This interval also aids in attempting to make the attack seem more fluid instead of static
 
-5. Steps #3 and #4 remain active until either the script is killed, or the specified length of the entire request (--length) reaches its end, or the server crashes
+5. When a socket dies or a server-side thread is freed up (unoccupied), additional sockets are concurrently created and established to maximize the number of occupied server-side threads
+
+6. Steps #4 and #5 remain active until either the script is killed, or the specified length of the entire request (--length) is reached, or the server crashes
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Unterminated.png" >
@@ -85,11 +87,11 @@ OR
 
 2. *Terminated* GET request headers are created to be sent via all these created sockets
 
-3. As this large number of sockets are being created and established, the *terminated* GET requests are concurrently sent to the target web server using whatever sockets are already established presently
+3. As this large number of sockets is being created and established, the *terminated* GET requests are concurrently sent to the target web server using whatever sockets are already established presently
 
 4. When a socket dies or a server-side thread is freed up (unoccupied), additional sockets are concurrently created and established to maximize the number of occupied server-side threads
 
-5. Steps #3 and #4 remain active until either the script is killed, or the specified length of the entire request (--length) reaches its end, or the server crashes
+5. Steps #3 and #4 remain active until either the script is killed, or the specified length of the entire request (--length) is reached, or the server crashes
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Terminated.png" >
