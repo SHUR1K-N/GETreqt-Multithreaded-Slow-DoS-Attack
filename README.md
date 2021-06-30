@@ -3,7 +3,7 @@
 ## Description
 A unique, multithreaded Low & Slow denial-of-service (Slow DoS) attack against web servers that use vulnerable versions of thread-based web server software (Apache 1.x, Apache 2.x, httpd, etc.), that denies typical service to the web server’s legitimate clients by exhausting server resources at the cost of minimal bandwidth at the attacker's end.
 
-This unique approach uses staggering amounts of concurrently generated HTTP GET requests even while the other sockets are being created and established on-the-go, and is effective even against even some mitigation mechanisms such as poorly implemented load-balancing proxy servers.
+This unique approach uses staggering amounts of concurrently generated HTTP GET requests even while the other sockets are being created and established on-the-go, and is effective even against even some of its typical mitigation mechanisms such as poorly implemented load-balancing proxy servers.
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Example%20Execution.png" >
