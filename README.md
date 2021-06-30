@@ -36,7 +36,7 @@ This project was created in Python, to supplement my Computer Science engineerin
 - nginx
 - Squid
 
-*You may test these and report them as vulnerable/invulnerable to update this list in the future.*
+*You may test these and report them as vulnerable / invulnerable to update this list in the future.*
 
 ## Usage
 ### Relatively "Elegant" Slow DoS Attack (`--wait`)
@@ -68,15 +68,20 @@ This project was created in Python, to supplement my Computer Science engineerin
 ### Using the `--wait` option
 1. The specified number of client-side software threads (--threads) are created — these would serve as the individual sockets established between the client and server
 
-2. *Unterminated* GET request headers are created to be sent via all these created sockets
+2. *Unterminated* (deliberately incomplete) GET request headers are created to be sent via all these created sockets
 
 3. As this large number of sockets is being created and established, the *unterminated* GET requests are concurrently sent to the target web server using whatever sockets are already established presently
 
-4. At randomized time intervals, a single byte is added to this ongoing, unterminated GET request to keep the communication with the server alive and the GET request further ongoing. This time interval is a float within the 0–5 range, and is randomized for each individual socket, for each individual iteration. This interval also aids in attempting to make the attack seem more fluid instead of static
+4. At randomized time intervals, a single byte is added to this unterminated GET request to keep the communication with the server alive. This time interval is a float value within the 0–5 range, and is randomized for each individual socket, for each individual iteration. This interval also aids in attempting to make the attack seem less automated or static, and more "human-like" to a potential monitoring mechanism at the server's end
+
+  Essentially, each created and established socket sends *unterminated* (deliberately incomplete) GET requests to the target server first. After this, every 0–5 seconds, a *single* arbitrary byte is added to each of these incomplete GET requests of each socket to give the target server an impression of an alive and *still* ongoing connection — like a drip feed. As the server is still "waiting" for all these concurrent requests to *terminate* (complete) correctly, this consumes a single software thread of the server per successfully connected GETreqt socket (eg: 1,000 server threads for 1,000 successfully connected sockets). Ergo, GETreqt with the `--wait` option attempts at *occupying* as many of the server-side threads—that are explicitly assigned to be serving clients—as possible in order to disrupt or hinder typical service to a legitimate client that is trying to access the web server.
 
 5. When a socket dies or a server-side thread is freed up (unoccupied), additional sockets are concurrently created and established to maximize the number of occupied server-side threads
 
-6. Steps #4 and #5 remain active until either the script is killed, or the specified length of the entire request (--length) is reached, or the server crashes
+5. Steps #4 and #5 remain active until either of the following occurs:
+  - The specified length of the request (--length) is reached
+  - The script is manually killed
+  - The target server crashes
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Unterminated.png" >
@@ -86,13 +91,18 @@ This project was created in Python, to supplement my Computer Science engineerin
 ### Using the `--end` option
 1. The specified number of client-side software threads (--threads) are created — these would serve as the individual sockets established between the client and server
 
-2. *Terminated* GET request headers are created to be sent via all these created sockets
+2. *Terminated* (completed) GET request headers are created to be sent via all these created sockets
 
 3. As this large number of sockets is being created and established, the *terminated* GET requests are concurrently sent to the target web server using whatever sockets are already established presently
 
+  Essentially, each created and established socket sends *terminated* (completed) GET requests to the target server, and goes on doing this repeatedly in an attempt at engaging as many server-side threads as possible momentarily. If a request is accepted and processed by the target server, even momentarily, it consumes a single software thread of the server per successfully connected GETreqt socket (eg: 500 server threads for 500 successfully connected sockets). Ergo, GETreqt with the `--end` option attempts at *overwhelming* the target server by blatantly spraying it with meaningless yet *valid* requests in order to occupy as many of the server-side threads—that are explicitly assigned to be serving clients—as possible in order to disrupt or hinder typical service to a legitimate client that is trying to access the web server.
+
 4. When a socket dies or a server-side thread is freed up (unoccupied), additional sockets are concurrently created and established to maximize the number of occupied server-side threads
 
-5. Steps #3 and #4 remain active until either the script is killed, or the specified length of the entire request (--length) is reached, or the server crashes
+5. Steps #3 and #4 remain active until either of the following occurs:
+  - The specified length of the request (--length) is reached
+  - The script is manually killed
+  - The target server crashes
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Terminated.png" >
@@ -119,7 +129,7 @@ A reverse proxy server serves as an additional, protective layer to the destinat
 
 That stated, if a reverse proxy server is poorly implemented or configured, then it would be vulnerable to GETreqt *first*. This means that if the reverse proxy server *itself* is vulnerable to GETreqt and is crippled by the attack, then since it serves as the only route through which a user could access the *intended* destination web server, the destination web server would *also* be inaccessible — technically *also* being a denial of typical service.
 
-Upon a reverse proxy server failure such as this, a page resembling the following context/nature would display to a legitimate client attempting to access the web page:
+Upon a reverse proxy server failure such as this, a page resembling the following context / nature would display to a legitimate client attempting to access the web page:
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Reverse%20Proxy%20Failure.jpg" >
