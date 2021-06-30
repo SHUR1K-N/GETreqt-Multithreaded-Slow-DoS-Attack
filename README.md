@@ -3,7 +3,7 @@
 ## Description
 A unique, multithreaded Low & Slow denial-of-service (Slow DoS) attack against web servers that use vulnerable versions of thread-based web server software (Apache 1.x, Apache 2.x, httpd, etc.), that denies typical service to the web server’s legitimate clients by exhausting server resources at the cost of minimal bandwidth at the attacker's end.
 
-This unique approach uses staggering amounts of concurrently generated HTTP GET requests even while the other sockets are being created and established on-the-go, and is effective even against even some of its typical mitigation mechanisms such as poorly implemented load-balancing proxy servers.
+This unique approach uses staggering amounts of concurrently generated HTTP GET requests even while the other sockets are being created and established on-the-go, and is effective even against even some of its typical mitigation mechanisms such as poorly implemented reverse proxy servers.
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Example%20Execution.png" >
@@ -96,7 +96,7 @@ OR
 <p>Sending Terminated Requests</p>
 </div>
 
-### Results
+## Results
 When the server-side threads that are explicitly assigned to be serving clients are completely occupied by GETreqt's flood of terminated or unterminated GET requests, a legitimate client would fail to connect with the web server due to an insufficient amount of available threads on the server-side to be serving this client. This will result in the "Waiting for \<target host\>" message as the web browser anticipates a connection but never establishes one:
 
 <div align="center">
@@ -104,15 +104,29 @@ When the server-side threads that are explicitly assigned to be serving clients 
 <p>Waiting...</p>
 </div>
 
-Further, upon waiting for a long enough amount of time, the web browser gives up as the server-side threads are completely occupied serving the attacker's requests. This is when the "ERR_CONNECTION_TIMED_OUT" error message is displayed:
+Further, upon waiting for a long enough amount of time, the web browser gives up as the server-side threads are completely occupied serving the attacker's requests. This is when the "ERR_CONNECTION_TIMED_OUT" error message is displayed to a legitimate client attempting to access the web page::
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/ERR_CONNECTION_TIMED_OUT.png" >
 <p>ERR_CONNECTION_TIMED_OUT</p>
 </div>
 
+#### In the case of poorly implemented reverse proxy servers
+A reverse proxy server serves as an additional, protective layer to the destination server by obscuring the destination server's direct specifications (such as its IP address). Hence, say, if a ping command were to be executed using the primary web page domain using `ping webpage.com`, then the IP address being pinged would be that of the *reverse proxy* server instead of the destination web server where the web page exists.
+
+That stated, if a reverse proxy server is poorly implemented or configured, then it would be vulnerable to GETreqt *first*. This means that if the reverse proxy server *itself* is vulnerable to GETreqt and is crippled by the attack, then since it serves as the only route through which a user could access the *intended* destination web server, the destination web server would *also* be inaccessible — technically *also* being a denial of typical service.
+
+Upon a reverse proxy server failure such as this, a page resembling the following would display to a legitimate client attempting to access the web page:
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Reverse%20Proxy%20Failure.jpg" >
+<p>Reverse Proxy Server Failure</p>
+</div>
+
 ## Disclaimer
 GETreqt was created for the purposes of education, research, and inspiring awareness regarding organizations using vulnerable web server software versions. I neither endorse nor shall be held responsible for any potential unethical or malicious activity that is a result of *your* usage of GETreqt.
+
+*Use your superpowers for good, not evil.*
 
 ## Dependencies to PIP-Install
 - **colorama** (for colors)
