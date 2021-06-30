@@ -111,12 +111,12 @@ Further, upon waiting for a long enough amount of time, the web browser gives up
 <p>ERR_CONNECTION_TIMED_OUT</p>
 </div>
 
-#### In the case of poorly implemented reverse proxy servers
+## Results (Poorly Implemented Reverse Proxy Servers)
 A reverse proxy server serves as an additional, protective layer to the destination server by obscuring the destination server's direct specifications (such as its IP address). Hence, say, if a ping command were to be executed using the primary web page domain using `ping webpage.com`, then the IP address being pinged would be that of the *reverse proxy* server instead of the destination web server where the web page exists.
 
 That stated, if a reverse proxy server is poorly implemented or configured, then it would be vulnerable to GETreqt *first*. This means that if the reverse proxy server *itself* is vulnerable to GETreqt and is crippled by the attack, then since it serves as the only route through which a user could access the *intended* destination web server, the destination web server would *also* be inaccessible — technically *also* being a denial of typical service.
 
-Upon a reverse proxy server failure such as this, a page resembling the following would display to a legitimate client attempting to access the web page:
+Upon a reverse proxy server failure such as this, a page resembling the following context/nature would display to a legitimate client attempting to access the web page:
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/Reverse%20Proxy%20Failure.jpg" >
