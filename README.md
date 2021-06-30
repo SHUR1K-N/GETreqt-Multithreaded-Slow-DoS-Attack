@@ -1,7 +1,7 @@
-# GETreqt: Multithreaded Slow DoS Attack
+# GETreqt (Get-Wrecked): Multithreaded Slow DoS Attack
 
 ## Description
-A unique, multithreaded Low & Slow denial-of-service (Slow DoS) attack against web servers that use vulnerable versions of Apache, that denies typical service to the web server’s legitimate clients by exhausting server resources at the cost of minimal bandwidth at the attacker's end.
+A unique, multithreaded Low & Slow denial-of-service (Slow DoS) attack against web servers that use vulnerable versions of thread-based web server software, that denies typical service to the web server’s legitimate clients by exhausting server resources at the cost of minimal bandwidth at the attacker's end.
 
 This unique approach uses staggering amounts of concurrently generated HTTP GET requests even while the other sockets are being created and established on-the-go, and is effective even against poorly implemented mitigation mechanisms such as load balancing proxy servers.
 
@@ -12,8 +12,31 @@ This unique approach uses staggering amounts of concurrently generated HTTP GET 
 
 This project was created in Python, to supplement my Computer Science engineering degree's final-year research project titled "Low & Slow: The Evil Twin of DDoS Attacks", which was an awareness-based project. This project received the title of "The Best Project of Its Year" by the university.
 
-## Disclaimer
-GETreqt was created for the purposes of education, research, and inspiring awareness regarding organizations using vulnerable web server software versions. I neither endorse nor shall be held responsible for any potential unethical or malicious activity that is a result of *your* usage of this tool.
+#### Web servers tested so far & confirmed as vulnerable:
+
+- Apache 1.x
+- Apache 2.x
+
+#### Web servers untested so far & theoretically vulnerable:
+- BeeWare WAF
+- DenyAll WAF
+- dhttpd
+- Flask
+- GoAhead WebServer
+- Trapeze Wireless Web Portal
+- WebSense "block pages"
+
+#### Web servers theoretically invulnerable or not completely vulnerable:
+- Cherokee
+- Cisco CSS
+- IIS6.0
+- IIS7.0
+- lighttpd
+- Netscaler
+- nginx
+- Squid
+
+*You may test other file extensions/types and report them as supported/unsupported to update this list in the future.*
 
 ## Usage
 <div align="center">
@@ -87,6 +110,9 @@ Further, upon waiting for a long enough amount of time, the web browser gives up
 <img src="https://raw.githubusercontent.com/SHUR1K-N/GETreqt-Multithreaded-Slow-DoS-Attack/main/Images/ERR_CONNECTION_TIMED_OUT.png" >
 <p>ERR_CONNECTION_TIMED_OUT</p>
 </div>
+
+## Disclaimer
+GETreqt was created for the purposes of education, research, and inspiring awareness regarding organizations using vulnerable web server software versions. I neither endorse nor shall be held responsible for any potential unethical or malicious activity that is a result of *your* usage of GETreqt.
 
 ## Dependencies to PIP-Install
 - **colorama** (for colors)
