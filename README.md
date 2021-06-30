@@ -36,7 +36,7 @@ This project was created in Python, to supplement my Computer Science engineerin
 - nginx
 - Squid
 
-*You may test other file extensions/types and report them as supported/unsupported to update this list in the future.*
+*You may test these and report them as vulnerable/invulnerable to update this list in the future.*
 
 ## Usage
 <div align="center">
