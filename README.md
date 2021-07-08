@@ -10,7 +10,7 @@ This unique approach uses staggering amounts of concurrently generated HTTP GET 
 <p>Example Execution</p>
 </div>
 
-This project was created in Python, to supplement my Computer Science engineering degree's final-year research project titled "Low & Slow: The Evil Twin of DDoS Attacks", which was an awareness-based project. This project received the title of "The Best Project of Its Year" by the university.
+This project was created in Python, to supplement my Computer Science engineering degree's final-year research project titled "Low & Slow: The Evil Twin of DDoS Attacks", which was an awareness-based project. This project was honored with the title of "Project of the Year" by the university.
 
 #### Web servers tested so far & confirmed as vulnerable:
 
