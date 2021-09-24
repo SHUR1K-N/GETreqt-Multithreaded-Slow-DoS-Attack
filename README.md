@@ -137,7 +137,7 @@ Upon a reverse proxy server failure such as this, a page resembling the followin
 </div>
 
 ## Disclaimer
-GETreqt was created for the purposes of education, research, and inspiring awareness regarding organizations using vulnerable web server software versions. I neither endorse nor shall be held responsible for any potential unethical or malicious activity that is a result of *your* usage of GETreqt.
+GETreqt was created for the purposes of education, research, and inspiring awareness surrounding the fact that organizations are still using vulnerable web server software versions in the current iteration of the digital world. I neither endorse nor shall be held responsible for any potential unethical or malicious activity that is a result of *your* usage of GETreqt.
 
 *Use your superpowers for good, not evil.*
 
