@@ -45,7 +45,7 @@ This project was created in Python, to supplement my Computer Science engineerin
 
 `GETreqt.py -x example.com -p 80 -l 1024 -t 6000 -w`
 
-### Blatant GET Spam Attack (`--end`)
+### Blatant GET Flood Attack (`--end`)
 
 `GETreqt.py --target example.com --port 80 --length 1024 --threads 10000 --end`
 
@@ -60,7 +60,7 @@ This project was created in Python, to supplement my Computer Science engineerin
 |length (-l)  | Total packet length (eg: 1000)                          |
 |threads (-t) | Threads (sockets) to attack with (eg: 6000)             |
 |wait (-w)    | Do not terminate requests (relatively elegant slow DoS) |
-|end (-e)     | Terminate all requests correctly (blatant GET spam)     |
+|end (-e)     | Terminate all requests correctly (blatant GET Flood)     |
 
 </div>
 
