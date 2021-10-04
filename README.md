@@ -60,7 +60,7 @@ This project was created in Python, to supplement my Computer Science engineerin
 |length (-l)  | Total packet length (eg: 1000)                          |
 |threads (-t) | Threads (sockets) to attack with (eg: 6000)             |
 |wait (-w)    | Do not terminate requests (relatively elegant slow DoS) |
-|end (-e)     | Terminate all requests correctly (blatant GET Flood)     |
+|end (-e)     | Terminate all requests correctly (blatant GET flood)     |
 
 </div>
 
